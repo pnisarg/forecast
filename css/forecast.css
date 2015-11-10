@@ -1,0 +1,27 @@
+body{
+    display: block;
+    background: url("./../images/bg.jpg") no-repeat fixed center;
+    background-size: cover;
+}
+.header{
+    text-align: center;
+    font-size: 2em;
+    margin: 5px;
+}
+
+.star{
+    color: red;
+}
+.caption{
+    vertical-align: bottom;
+}
+fieldset{
+    background-color: rgba(0,0,0,0.3);
+    border-radius: 4px;
+    color:white;
+    padding-top: 10px;
+    margin: 10px;
+}
+label.error{
+    color: rgb(230,0,0);
+}
