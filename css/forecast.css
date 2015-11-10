@@ -25,3 +25,54 @@ fieldset{
 label.error{
     color: rgb(230,0,0);
 }
+
+.nav-tabs > li > a {
+  margin-right: 2px;
+  line-height: 1.42857143;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  background-color: #eee;
+}
+.nav-tabs > li > a:hover {
+  border-color: #eee #eee #ddd;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  color: white;
+  cursor: default;
+  background-color: rgb(40,90,160);
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+}
+.currentWeatherTableHeader{
+    background-color:rgb(215,115,115);
+    color: white;
+    height: 130px;
+    padding: 10px 0px;
+}
+#weatherIcon{
+    max-height: 100%;
+    max-width: 100%;
+    margin: auto;
+    display: block;
+}
+ul.temperatureDiv{
+    list-style: none;
+    text-align: center;
+    padding: 5px;
+} 
+.temperatureDiv{
+    margin: auto;
+    max-height: 100%;
+    max-width: 100%;
+    text-align: center;
+}
+#temperature{
+    font-size: 50px;
+}
+#unit{
+    position: relative;
+    top:-20px;
+    font-size: 20px;
+}
