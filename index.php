@@ -14,12 +14,14 @@ $usStatesList=array(""=>"Select your state... ","AL"=>"Alabama","AK"=>"Alaska","
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Forecast</title>
+        <script src="http://openlayers.org/api/OpenLayers.js"></script>
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/forecast.css">
         <script src="./js/jquery-2.1.4.js"></script>
         <script src="./js/bootstrap.min.js"></script>
         <script src="./js/forecast.js"></script>
         <script src="./js/jquery.validate.js"></script>
+
 
     </head>
     <body>
@@ -85,8 +87,7 @@ $usStatesList=array(""=>"Select your state... ","AL"=>"Alabama","AK"=>"Alaska","
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="rightNow">
                 <div class="row">
-                    <div class="col-md-6" id="currentWeatherTable">
-
+                    <div class="col-sm-12 col-md-6" id="currentWeatherTable">
                         <div class="col-md-6 currentWeatherTableHeader" id="weatherImage"></div>
                         <div class="col-md-6 currentWeatherTableHeader">
                             <ul class="temperatureDiv">
@@ -95,27 +96,42 @@ $usStatesList=array(""=>"Select your state... ","AL"=>"Alabama","AK"=>"Alaska","
                                     <span id="temperature">72</span>
                                     <span id="unit">&deg; F</span>
                                 </li>
-                                <li id="highLow">L: 70 &deg; | H: 80 &deg;</li>
+                                <li>
+                                    <span id="lowTemp">L: 70&deg;</span> 
+                                    <span style="color:black"> | </span>
+                                    <span id="highTemp">H: 79&deg;</span>
+                                </li>
                             </ul>
                         </div>
-                        
+
                         <table class="table table-striped table-responsive">
-                            <tr><td>Precipitation</td><td>None</td></tr>
-                            <tr class="danger"><td>Chance of Rain</td><td>None</td></tr>
-                            <tr><td>Wind Speed</td><td>None</td></tr>
-                            <tr class="danger"><td>Dew Point</td><td>None</td></tr>
-                            <tr><td>Humidity</td><td>None</td></tr>
-                            <tr class="danger"><td>Visibility</td><td>None</td></tr>
-                            <tr><td>Sunrise</td><td>None</td></tr>
-                            <tr class="danger"><td>Sunset</td><td>None</td></tr>
+                            <tr><td>Precipitation</td><td id="precipitation">None</td></tr>
+                            <tr class="danger"><td>Chance of Rain</td><td id="rainChance">None</td></tr>
+                            <tr><td>Wind Speed</td><td id="windSpeed">None</td></tr>
+                            <tr class="danger"><td>Dew Point</td><td id="dewPoint">None</td></tr>
+                            <tr><td>Humidity</td><td id="humidity">None</td></tr>
+                            <tr class="danger"><td>Visibility</td><td id="visibility">None</td></tr>
+                            <tr><td>Sunrise</td><td id="sunrise">None</td></tr>
+                            <tr class="danger"><td>Sunset</td><td id="sunset">None</td></tr>
                         </table>
                     </div>
-                    <div class="col-md-6" id="currentWeatherMap"></div>
+                    <div class="col-sm-12 col-md-6" id="currentWeatherMapOuter"><div id="currentWeatherMap"></div></div>
                 </div>
             </div>
-            <div role="tabpanel" class="tab-pane" id="next24Hours">I'm profile tab</div>
+            <div role="tabpanel" class="tab-pane" id="next24Hours">
+                <table class="table table-responsive" id="next24HoursTable">
+                    <tr class="blueHeader">
+                        <th>Time</th>
+                        <th>Summary</th>
+                        <th>Cloud Cover</th>
+                        <th>Temp (&deg;F)</th>
+                        <th>View Details</th>
+                    </tr>
+                </table>
+            </div>
             <div role="tabpanel" class="tab-pane" id="next7days">I'm messages tab</div>
         </div>
+
 
     </div><!-- End of class result -->
     </div> <!-- container end-->

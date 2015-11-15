@@ -76,3 +76,60 @@ ul.temperatureDiv{
     top:-20px;
     font-size: 20px;
 }
+#lowTemp{
+    color: blue;
+}
+#highTemp{
+    color:green;
+}
+#next24Hours table{
+    text-align: center;
+}
+#next24Hours td{
+    height: 70px;
+}
+#next24Hours th{
+    text-align: center;
+}
+.blueHeader th{
+    color: white;
+    background-color: rgb(40,90,160);
+}
+#accordIconImage{
+    max-height: 100%;
+    max-width: 100%;
+    margin: auto;
+    display: block;
+}
+.glyphicon-plus{
+    color:rgb(40,90,160);
+}
+.hiddenRow{
+    padding: 0 !important;
+    height: 0 !important;
+}
+.hiddenDiv{
+    background-color: #ddd;
+    padding: 20px;
+    height: 120px;
+}
+.hiddenDiv td{
+    background-color: #ddd;
+}#currentWeatherMap{
+  margin: 15px;
+  max-width: 100%;
+  height: 425px;
+  padding: 0px;
+    
+}
+#currentWeatherTable.col-md-6{
+    padding-right: 0px;
+}
+#currentWeatherMapOuter.col-md-6{
+    padding-left: 0px;
+}
+@media (max-width: 978px) {
+    #currentWeatherTable, #currentWeatherMapOuter{
+        padding: 0px 15px !important;
+    }
+}
