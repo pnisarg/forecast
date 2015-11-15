@@ -129,7 +129,12 @@ $usStatesList=array(""=>"Select your state... ","AL"=>"Alabama","AK"=>"Alaska","
                     </tr>
                 </table>
             </div>
-            <div role="tabpanel" class="tab-pane" id="next7days">I'm messages tab</div>
+            <div role="tabpanel" class="tab-pane" id="next7days">
+                <div class="container-fluid">
+                <div class="row" id="weatherBarDiv">
+                </div>
+                </div>
+            </div>
         </div>
 
 

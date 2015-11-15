@@ -1,6 +1,6 @@
 $('document').ready(function(){
 
-    $('.result').hide();
+//    $('.result').hide();
     jQuery.validator.addMethod("noSpaces", function(value, element) {
         return this.optional(element) || value.trim().length > 0;
     });    //validates input against spaces
@@ -45,10 +45,11 @@ $('document').ready(function(){
     });
 });
 
-
+//Global Variables
 var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
 var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
 var zoom           = 9; 
+
 //Array for icon value mapping
 var iconValue = {
     "clear-day" : "clear.png",
@@ -133,6 +134,8 @@ function generateRightNow(result){
     setTemperature(result);
     setTableValues(result);
 }
+
+//takes unix time stamp as input and returns human readable time in '10:10 PM' format 
 function getHumanReadableTime(timestamp){
     var time = new Date(timestamp * 1000);
     var hour = time.getHours();
@@ -149,6 +152,7 @@ function getHumanReadableTime(timestamp){
     else time += " AM";
     return time;
 }
+
 //Generate content for Next 24 Hours Tab 
 function generateNext24(result){
     var hourly = result.hourly.data;
@@ -190,11 +194,39 @@ function generateNext24(result){
 
     }
 }
+
 //Generate content for Next 7 Days Tab 
 function generateNext7(result){
-
+    var dayBar = $('#weatherBarDiv');
+    var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    dayBar.html('');
+    dayBar.append('<div class="col-md-1 col-md-offset-1"></div>');
+    var daily = result.daily.data;
+    for(var i=1;i<8;i++){
+        var timestamp = daily[i].time * 1000;
+        var day = new Date(timestamp).getDay();
+        var month = new Date(timestamp).getMonth();
+        var date = new Date(timestamp).getDate();
+        var imageUrl = "./images/" + iconValue[daily[i].icon];
+        var minTemperature = Math.round(daily[i].temperatureMin)+ "&deg;";
+        var maxTemperature = Math.round(daily[i].temperatureMax)+ "&deg;";
+        var image = '<img class="img-responsive dailyBarIcon" src="'+imageUrl+'">';
+        var row = '<div class="col-md-1 dayBar">'+days[day]+ '<br><span style="line-height:2">'+months[month]+ ' ' + date+ '</span><br>'+ image +'<br> Min<br>Temp'+'<br><span class="bigTemp">'+minTemperature+'</span><br> Max<br>Temp<br><span class="bigTemp">'+maxTemperature+'</span></div>';
+        dayBar.append(row);
+    }
+    
+//     <div class="col-md-1 dayBar">something</div>
+//                    <div class="col-md-1 dayBar">something</div>
+//                    <div class="col-md-1 dayBar">something</div>
+//                    <div class="col-md-1 dayBar">something</div>
+//                    <div class="col-md-1 dayBar">something</div>
+//                    <div class="col-md-1 dayBar">something</div>
+//                    <div class="col-md-1 dayBar">something</div>
+//
 }
-//populate Data
+
+//populate Data; call back funtion that gets called after making successful ajax call to 
 function successFunction(response){
     if(response != null)
         var result = JSON.parse(response);
