@@ -49,6 +49,7 @@ $('document').ready(function(){
 var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
 var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
 var zoom           = 9; 
+var timezone = '';
 
 //Array for icon value mapping
 var iconValue = {
@@ -72,7 +73,7 @@ function setImage(image){
 
 function setTemperature(result){
     var condition = result.currently.summary;
-    var city = $('#city').val().trim();
+    city = $('#city').val().trim();
     var state = $('#state').val();
     var summary = condition +" in "+city+", "+state;
     var temperature = Math.round(result.currently.temperature);
@@ -110,8 +111,12 @@ function setTableValues(result){
     precipitation = getPrecipitation(prep);
     var rainChance = Math.round(result.currently.precipProbability * 100) +"%";
     var humidity = Math.round(result.currently.humidity * 100)+"%";
+    var sunrise = result.daily.data[0].sunriseTime;
+    sunrise = moment.unix(sunrise).tz(timezone).format("hh:mm A");
+    var sunset = result.daily.data[0].sunsetTime;
+    sunset = moment.unix(sunset).tz(timezone).format("hh:mm A");
     if(unit == "si"){
-        windSpeed = (result.currently.windSpeed * 3.6).toFixed(2) + " kph";
+        windSpeed = (result.currently.windSpeed).toFixed(2) + " m/s";
         dewPoint =  (result.currently.dewPoint).toFixed(2) + "&deg C";
         visibility = (result.currently.visibility).toFixed(2) + " km";
     }else{
@@ -125,7 +130,8 @@ function setTableValues(result){
     $('#dewPoint').html(dewPoint);
     $('#humidity').html(humidity);
     $('#visibility').html(visibility);
-    //yet todo sunrise and sunset
+    $('#sunrise').html(sunrise);
+    $('#sunset').html(sunset);
 }
 
 //Generate content for rightNow Tab 
@@ -178,7 +184,8 @@ function generateNext24(result){
     var collapseRow;
     for(var i=1; i<= 24; i++){
         targetDiv = "hourRow"+i;
-        myTime = getHumanReadableTime(hourly[i].time);
+        //        myTime = getHumanReadableTime(hourly[i].time);
+        myTime = moment.unix(hourly[i].time).format("hh:mm A");
         icon = hourly[i].icon;
         cloudCover = Math.round(hourly[i].cloudCover * 100)+"%";
         temperature = (hourly[i].temperature).toFixed(2);
@@ -195,35 +202,106 @@ function generateNext24(result){
     }
 }
 
+//creates seperate modal div for each day(7 divs)
+function createModal(month, date, icon, day, modalId,condition,humidity,windSpeed, visibility,pressure,sunset,sunrise){
+
+    var modalTitle = 'Weather in '+city+' on '+month+' '+date;
+    var modalString = '<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="'+modalId+'Label" id="'+modalId+'" >';
+    var modal = $(modalString);
+    var modalDoc = $('<div class="modal-dialog" role="document">'); // modal document
+    modal.append(modalDoc);
+    var modalContent = $('<div class="modal-content">'); //modal content 
+    modalDoc.append(modalContent);
+
+    //Modal header 
+    var modalHeader = '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="myModalLabel">'+ modalTitle +'</h4></div>';
+    modalContent.append(modalHeader); 
+
+    //modal body
+    var modalBody = $('<div class="modal-body">'); 
+    var icon = '<div><img class="img-responsive modalIcon" src="'+icon+'"></div>';
+    var summary = '<div class="modalSummary">'+day+': <span style="color:orange">'+condition+'</span></div>';
+    var firstRow = '<div class="row" style="text-align:center;"><div class="col-md-4"><span class="bigFont">Sunrise Time</span><br>'+sunrise+'</div><div class="col-md-4"><span class="bigFont">Sunset Time</span><br>'+sunset+'</div><div class="col-md-4"><span class="bigFont">Humidity</span><br>'+humidity+'</div></div>';
+    var secondRow = '<div class="row" style="text-align:center;"><div class="col-md-4"><span class="bigFont">Wind Speed</span><br>'+windSpeed+'</div><div class="col-md-4"><span class="bigFont">Visibility</span><br>'+visibility+'</div><div class="col-md-4"><span class="bigFont">Pressure</span><br>'+pressure+'</div></div>';
+    modalBody.append(icon);
+    modalBody.append(summary);
+    modalBody.append(firstRow);
+    modalBody.append(secondRow);
+    modalContent.append(modalBody);
+    //modal footer
+    modalContent.append('<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>');
+    $('#modals').append(modal);
+
+}
+
 //Generate content for Next 7 Days Tab 
 function generateNext7(result){
     var dayBar = $('#weatherBarDiv');
+    var timestamp, day, month, date, imageUrl, minTemperature, maxTemperature, image, modalId, row, condition, humidity,windSpeed, visibility,pressure, sunset, sunrise;
     var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var colors = ["#2869AA", "#FF2032", "#E17B38", "#979723", "#855898", "#E66368", "#C42A5D"];
     dayBar.html('');
+    $('#modals').html('');
     dayBar.append('<div class="col-md-1 col-md-offset-1"></div>');
     var daily = result.daily.data;
     for(var i=1;i<8;i++){
-        var timestamp = daily[i].time * 1000;
-        var day = new Date(timestamp).getDay();
-        var month = new Date(timestamp).getMonth();
-        var date = new Date(timestamp).getDate();
-        var imageUrl = "./images/" + iconValue[daily[i].icon];
-        var minTemperature = Math.round(daily[i].temperatureMin)+ "&deg;";
-        var maxTemperature = Math.round(daily[i].temperatureMax)+ "&deg;";
-        var image = '<img class="img-responsive dailyBarIcon" src="'+imageUrl+'">';
-        var row = '<div class="col-md-1 dayBar">'+days[day]+ '<br><span style="line-height:2">'+months[month]+ ' ' + date+ '</span><br>'+ image +'<br> Min<br>Temp'+'<br><span class="bigTemp">'+minTemperature+'</span><br> Max<br>Temp<br><span class="bigTemp">'+maxTemperature+'</span></div>';
+        timestamp = daily[i].time * 1000;
+        day = new Date(timestamp).getDay();
+        month = new Date(timestamp).getMonth();
+        date = new Date(timestamp).getDate();
+        imageUrl = "./images/" + iconValue[daily[i].icon];
+        minTemperature = Math.round(daily[i].temperatureMin)+ "&deg;";
+        maxTemperature = Math.round(daily[i].temperatureMax)+ "&deg;";
+        image = '<img class="img-responsive dailyBarIcon" src="'+imageUrl+'">';
+        modalId = "modalDay"+i;
+        condition = daily[i].summary;
+        humidity = (daily[i].humidity != null) ? Math.round(daily[i].humidity*100)+"%" : "N.A";
+        sunset = (daily[i].sunsetTime != null) ? moment.unix(daily[i].sunsetTime).tz(timezone).format("hh:mm A") : "N.A";
+        sunrise = (daily[i].sunriseTime != null) ? moment.unix(daily[i].sunriseTime).tz(timezone).format("hh:mm A") : "N.A";
+        if(unit == "si"){
+            windSpeed = (daily[i].windSpeed != null) ?(daily[i].windSpeed).toFixed(2) + "m/s" : "N.A";
+            dewPoint =  (daily[i].dewPoint != null) ? (daily[i].dewPoint).toFixed(2) + "&deg C" : "N.A";
+            visibility = (daily[i].visibility != null) ? (daily[i].visibility).toFixed(2) + "km" : "N.A";
+            pressure = (daily[i].pressure != null) ? (daily[i].pressure).toFixed(2) + "hPa" : "N.A";
+        }else{
+            windSpeed = (daily[i].windSpeed != null) ? (daily[i].windSpeed).toFixed(2) + "mph": "N.A";
+            dewPoint = (daily[i].dewPoint != null) ? (daily[i].dewPoint).toFixed(2) + "&deg F" : "N.A";
+            visibility = (daily[i].visibility != null) ? (daily[i].visibility).toFixed(2) +"mi" : "N.A";
+            pressure = (daily[i].pressure != null) ? (daily[i].pressure).toFixed(2) + "mb" : "N.A";
+        } 
+        createModal(months[month], date, imageUrl, days[day], modalId, condition, humidity, windSpeed, visibility, pressure, sunset, sunrise);
+        row = '<a data-toggle="modal" data-target="#'+modalId+'"><div class="col-md-1 dayBar" style="background-color:'+colors[i-1]+';">'+days[day]+ '<br><span style="line-height:2">'+months[month]+ ' ' + date+ '</span><br>'+ image +'<br> Min<br>Temp'+'<br><span class="bigTemp">'+minTemperature+'</span><br> Max<br>Temp<br><span class="bigTemp">'+maxTemperature+'</span></div></a>';
         dayBar.append(row);
     }
-    
-//     <div class="col-md-1 dayBar">something</div>
-//                    <div class="col-md-1 dayBar">something</div>
-//                    <div class="col-md-1 dayBar">something</div>
-//                    <div class="col-md-1 dayBar">something</div>
-//                    <div class="col-md-1 dayBar">something</div>
-//                    <div class="col-md-1 dayBar">something</div>
-//                    <div class="col-md-1 dayBar">something</div>
-//
+
+}
+
+function createMap(result){
+    $('#currentWeatherMap').html('');
+    var map = new OpenLayers.Map("currentWeatherMap");
+    var position       = new OpenLayers.LonLat(result.longitude,result.latitude).transform( fromProjection, toProjection);
+    var layer_cloud = new OpenLayers.Layer.XYZ(
+        "clouds",
+        "http://${s}.tile.openweathermap.org/map/clouds/${z}/${x}/${y}.png",
+        {
+            isBaseLayer: false,
+            opacity: 0.5,
+            sphericalMercator: true
+        }
+    );
+
+    var layer_precipitation = new OpenLayers.Layer.XYZ(
+        "precipitation",
+        "http://${s}.tile.openweathermap.org/map/precipitation/${z}/${x}/${y}.png",
+        {
+            isBaseLayer: false,
+            opacity: 0.5,
+            sphericalMercator: true
+        }
+    );
+    map.addLayers([new OpenLayers.Layer.OSM(),layer_precipitation,layer_cloud]);
+    map.setCenter(position, zoom );
 }
 
 //populate Data; call back funtion that gets called after making successful ajax call to 
@@ -231,39 +309,15 @@ function successFunction(response){
     if(response != null)
         var result = JSON.parse(response);
     if(result != null){
-        $('.result').show();
-        $('#currentWeatherMap').html('');
-        var map = new OpenLayers.Map("currentWeatherMap");
-        var position       = new OpenLayers.LonLat(result.longitude,result.latitude).transform( fromProjection, toProjection);
-        var layer_cloud = new OpenLayers.Layer.XYZ(
-            "clouds",
-            "http://${s}.tile.openweathermap.org/map/clouds/${z}/${x}/${y}.png",
-            {
-                isBaseLayer: false,
-                opacity: 0.5,
-                sphericalMercator: true
-            }
-        );
-
-        var layer_precipitation = new OpenLayers.Layer.XYZ(
-            "precipitation",
-            "http://${s}.tile.openweathermap.org/map/precipitation/${z}/${x}/${y}.png",
-            {
-                isBaseLayer: false,
-                opacity: 0.5,
-                sphericalMercator: true
-            }
-        );
-        map.addLayers([new OpenLayers.Layer.OSM(),layer_precipitation,layer_cloud]);
-        map.setCenter(position, zoom );
-
-
-
-        //    map.zoomToMaxExtent();
         unit = $('#forecastForm input[type=radio]:checked').val();
+        populateTimezones();
+        timezone = result.timezone;
         generateRightNow(result);
         generateNext24(result);
         generateNext7(result);
+        $('.result').show();
+        createMap(result);
+        
     }
 }
 

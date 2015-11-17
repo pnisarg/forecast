@@ -19,9 +19,12 @@ $usStatesList=array(""=>"Select your state... ","AL"=>"Alabama","AK"=>"Alaska","
         <link rel="stylesheet" href="css/forecast.css">
         <script src="./js/jquery-2.1.4.js"></script>
         <script src="./js/bootstrap.min.js"></script>
+        <script src="./js/timezones.js"></script>
         <script src="./js/forecast.js"></script>
         <script src="./js/jquery.validate.js"></script>
-
+        <script src="./js/moment.js"></script>
+         <script src="./js/moment-tz.js"></script>
+        
 
     </head>
     <body>
@@ -89,20 +92,21 @@ $usStatesList=array(""=>"Select your state... ","AL"=>"Alabama","AK"=>"Alaska","
                 <div class="row">
                     <div class="col-sm-12 col-md-6" id="currentWeatherTable">
                         <div class="col-md-6 currentWeatherTableHeader" id="weatherImage"></div>
-                        <div class="col-md-6 currentWeatherTableHeader">
+                        <div class="col-md-6 currentWeatherTableHeader" style="position:relative;">
                             <ul class="temperatureDiv">
-                                <li id="summary">Mostly Cloudy in Los Angeles, CA</li>
+                                <li id="summary">something something</li>
                                 <li >
-                                    <span id="temperature">72</span>
-                                    <span id="unit">&deg; F</span>
+                                    <span id="temperature">324</span>
+                                    <span id="unit"> F&deg;</span>
                                 </li>
                                 <li>
-                                    <span id="lowTemp">L: 70&deg;</span> 
+                                    <span id="lowTemp">23</span> 
                                     <span style="color:black"> | </span>
-                                    <span id="highTemp">H: 79&deg;</span>
+                                    <span id="highTemp">43</span>
                                 </li>
                             </ul>
-                        </div>
+                            <img src="./images/fb_icon.png" id="fbIcon" class="img-responsive">
+                       </div>
 
                         <table class="table table-striped table-responsive">
                             <tr><td>Precipitation</td><td id="precipitation">None</td></tr>
@@ -136,9 +140,10 @@ $usStatesList=array(""=>"Select your state... ","AL"=>"Alabama","AK"=>"Alaska","
                 </div>
             </div>
         </div>
-
-
     </div><!-- End of class result -->
     </div> <!-- container end-->
+    <div id="modals">
+
+</div>
 </body>
 </html>
