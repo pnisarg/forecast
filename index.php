@@ -17,15 +17,6 @@ $usStatesList=array(""=>"Select your state... ","AL"=>"Alabama","AK"=>"Alaska","
         <script src="http://openlayers.org/api/OpenLayers.js"></script>
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/forecast.css">
-        <script src="./js/jquery-2.1.4.js"></script>
-        <script src="./js/bootstrap.min.js"></script>
-        <script src="./js/timezones.js"></script>
-        <script src="./js/forecast.js"></script>
-        <script src="./js/jquery.validate.js"></script>
-        <script src="./js/moment.js"></script>
-         <script src="./js/moment-tz.js"></script>
-        
-
     </head>
     <body>
         <div class="container">
@@ -105,8 +96,8 @@ $usStatesList=array(""=>"Select your state... ","AL"=>"Alabama","AK"=>"Alaska","
                                     <span id="highTemp">43</span>
                                 </li>
                             </ul>
-                            <img src="./images/fb_icon.png" id="fbIcon" class="img-responsive">
-                       </div>
+                            <a><img src="./images/fb_icon.png" id="fbIcon" class="img-responsive"></a>
+                        </div>
 
                         <table class="table table-striped table-responsive">
                             <tr><td>Precipitation</td><td id="precipitation">None</td></tr>
@@ -135,15 +126,24 @@ $usStatesList=array(""=>"Select your state... ","AL"=>"Alabama","AK"=>"Alaska","
             </div>
             <div role="tabpanel" class="tab-pane" id="next7days">
                 <div class="container-fluid">
-                <div class="row" id="weatherBarDiv">
-                </div>
+                    <div class="row" id="weatherBarDiv">
+                    </div>
                 </div>
             </div>
         </div>
     </div><!-- End of class result -->
     </div> <!-- container end-->
-    <div id="modals">
+<div id="modals">
 
 </div>
+<!--        Scripts -->
+<script src="./js/jquery-2.1.4.js"></script>
+<script src="./js/fbPost.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/timezones.js"></script>
+<script src="./js/forecast.js"></script>
+<script src="./js/jquery.validate.js"></script>
+<script src="./js/moment.js"></script>
+<script src="./js/moment-tz.js"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 $('document').ready(function(){
 
-//    $('.result').hide();
+    $('.result').hide();
     jQuery.validator.addMethod("noSpaces", function(value, element) {
         return this.optional(element) || value.trim().length > 0;
     });    //validates input against spaces
@@ -65,22 +65,22 @@ var iconValue = {
     "partly-cloudy-night" : "cloud_night.png"
 };
 
-function setImage(image){
-    var imageUrl = "./images/" + iconValue[image];
-    var img = '<img id="weatherIcon" src="'+imageUrl+'">';
+function setImage(image, summary){
+    weatherImageUrl = "./images/" + iconValue[image];
+    var img = '<img id="weatherIcon" alt="'+summary+'" title="'+summary+'" src="'+weatherImageUrl+'">';
     $('#weatherImage').html(img);
 }
 
 function setTemperature(result){
-    var condition = result.currently.summary;
+    weatherCondition = result.currently.summary;
     city = $('#city').val().trim();
     var state = $('#state').val();
-    var summary = condition +" in "+city+", "+state;
-    var temperature = Math.round(result.currently.temperature);
+    var summary = weatherCondition +" in "+city+", "+state;
+    currentTemperature = Math.round(result.currently.temperature);
     var lowTemp = Math.round(result.daily.data[0].temperatureMin);
     var highTemp = Math.round(result.daily.data[0].temperatureMax);
     $('#summary').html(summary);
-    $('#temperature').html(temperature);
+    $('#temperature').html(currentTemperature);
     if(unit =="us")
         $('#unit').html("&deg; F");
     else
@@ -136,7 +136,7 @@ function setTableValues(result){
 
 //Generate content for rightNow Tab 
 function generateRightNow(result){
-    setImage(result.currently.icon);
+    setImage(result.currently.icon, result.currently.summary);
     setTemperature(result);
     setTableValues(result);
 }
@@ -193,7 +193,7 @@ function generateNext24(result){
         hourlyHumidity = Math.round(hourly[i].humidity * 100)+"%";
         hourlyVisibility = (hourly[i].visibility)+distanceUnit;
         hourlyPressure = (hourly[i].pressure)+pressureUnit;
-        row = "<tr class='active'><td>"+myTime+"</td><td><img id='accordIconImage' src='./images/"+iconValue[icon]+"'></td><td>"+cloudCover+"</td><td>"+temperature+"</td><td> <a class='accordion-toggle' data-toggle='collapse' data-target='#"+targetDiv+"'><span class='glyphicon glyphicon-plus'></span></a></td></tr>";
+        row = "<tr class='active'><td>"+myTime+"</td><td><img id='accordIconImage' alt='"+hourly[i].summary+"' title='"+hourly[i].summary+"' src='./images/"+iconValue[icon]+"'></td><td>"+cloudCover+"</td><td>"+temperature+"</td><td> <a class='accordion-toggle' data-toggle='collapse' data-target='#"+targetDiv+"'><span class='glyphicon glyphicon-plus'></span></a></td></tr>";
         table.append(row);
         collapseRow = "<table class='table table-condensed'><tr><th>wind</th><th>Humidity</th><th>Visibility</th><th>Pressure</th></tr><tr><td>"+hourlyWind+"</td><td>"+hourlyHumidity+"</td><td>"+hourlyVisibility+"</td><td>"+hourlyPressure+"</td></tr></table>";
         row = '<tr><td colspan="5" class="hiddenRow"><div id="'+targetDiv+'" class="accordian-body collapse hiddenDiv">'+collapseRow+'</div></td></tr>';
