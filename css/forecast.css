@@ -146,6 +146,12 @@ ul.temperatureDiv{
     background-color: rgb(35,35,45);
 /*    padding: 15px;*/
 }
+@media (max-width: 978px) {
+    #next7days{
+        background-color: rgba(35,35,45,0) !important;
+        border-radius: 15px !important;
+    }
+}
 .dailyBarIcon{
     max-height: 100%;
     max-width: 100%;
@@ -180,7 +186,7 @@ ul.temperatureDiv{
     font-size: 22px;
     text-align: center;
     font-weight: 500;
-    line-height: 2;
+    margin: 10px;
 }.bigFont{
     font-size: 18px;
     font-weight: 500;

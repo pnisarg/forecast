@@ -21,7 +21,7 @@ $('#fbIcon').click(function(){
     var summary = $('#summary').html();
     var tempUnit = (unit=="si")?"C":"F";
     var icon = "http://weatherforecastapp.elasticbeanstalk.com/forecast/"+weatherImageUrl.substr(2);
-    postToFacebook(icon, city, state,weatherCondition, temperature, tempUnit);
+    postToFacebook(icon, city, state,weatherCondition, currentTemperature, tempUnit);
 });
 
 function postToFacebook(icon, city, state,summary, temperature, unit){
