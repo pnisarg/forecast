@@ -7,5 +7,6 @@ Features:
 <br> *Forecast for next 7 days
 <br> *OpenMaps - shows precipitation and cloud cover in local region
 
+![Alt text](https://github.com/pnisarg/forecast/blob/master/images/screen.jpg "Screen Shot")
 
 
