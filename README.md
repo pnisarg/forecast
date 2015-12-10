@@ -2,10 +2,10 @@
 Web based forecast Search powered by http://forecast.io/
 
 Features:
-*Responsive web design
-*Summarised tablular forecast for next 24 hours 
-*Forecast for next 7 days
-*OpenMaps - shows precipitation and cloud cover in local region
+<br> *Responsive web design
+<br> *Summarised forecast for next 24 hours 
+<br> *Forecast for next 7 days
+<br> *OpenMaps - shows precipitation and cloud cover in local region
 
 
 
