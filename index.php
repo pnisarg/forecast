@@ -85,15 +85,15 @@ $usStatesList=array(""=>"Select your state... ","AL"=>"Alabama","AK"=>"Alaska","
                         <div class="col-md-6 currentWeatherTableHeader" id="weatherImage"></div>
                         <div class="col-md-6 currentWeatherTableHeader" style="position:relative;">
                             <ul class="temperatureDiv">
-                                <li id="summary">something something</li>
+                                <li id="summary"></li>
                                 <li >
-                                    <span id="temperature">324</span>
-                                    <span id="unit"> F&deg;</span>
+                                    <span id="temperature"></span>
+                                    <span id="unit"></span>
                                 </li>
                                 <li>
-                                    <span id="lowTemp">23</span> 
+                                    <span id="lowTemp"></span> 
                                     <span style="color:black"> | </span>
-                                    <span id="highTemp">43</span>
+                                    <span id="highTemp"></span>
                                 </li>
                             </ul>
                             <a><img src="./images/fb_icon.png" id="fbIcon" class="img-responsive"></a>

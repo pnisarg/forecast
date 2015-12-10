@@ -24,6 +24,7 @@ $('#fbIcon').click(function(){
     postToFacebook(icon, city, state,weatherCondition, currentTemperature, tempUnit);
 });
 
+
 function postToFacebook(icon, city, state,summary, temperature, unit){
     FB.ui({
         method: 'feed',
